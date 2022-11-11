@@ -33,15 +33,16 @@ class ArgsGet:
 
 class HttpPlugin(PluginModule[None, str]):
     def get(self, args: ArgsGet, invoker: Invoker):
-        config = {}
+        config = { }
+
         if 'request' in args:
             config = self.parse_config(args['request'])
-        
-        req = request("get", args['url'])
-        print(req)
+
+        req = request("get", args['url'], **config)
+
         return HttpResponse(
-            status=200,
-            status_text="OK",
+            status=req.status_code,
+            status_text=req.reason,
             headers=None,
             body=None
         )
